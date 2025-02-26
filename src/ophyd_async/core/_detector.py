@@ -92,9 +92,9 @@ class TriggerInfo(BaseModel):
     @cached_property
     def total_number_of_triggers(self) -> int:
         return (
-            sum(self.number_of_triggers) * self.frames_per_event
+            sum(self.number_of_triggers)
             if isinstance(self.number_of_triggers, list)
-            else self.number_of_triggers * self.frames_per_event
+            else self.number_of_triggers
         )
 
 
@@ -228,7 +228,7 @@ class StandardDetector(
         """Make sure the detector is idle and ready to be used."""
         await self._check_config_sigs()
         await asyncio.gather(self._writer.close(), self._controller.disarm())
-        self._trigger_info = None
+        # self._trigger_info = None
 
     async def _check_config_sigs(self):
         """Check configuration signals are named and connected."""

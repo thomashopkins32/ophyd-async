@@ -60,13 +60,14 @@ def count_sim(dets: Sequence[adsimdetector.SimDetector], times: int = 1):
             yield from bps.trigger(det, wait=False, group="wait_for_trigger")
 
         yield from bps.sleep(1.0)
-        [
+
+        # Assume that the number of images configured is the number of images captured
+        for det in dets:
+            num_images = yield from bps.rd(det.driver.num_images)
             set_mock_value(
                 det._writer.fileio.num_captured,
-                read_values[det] + 1,
+                read_values[det] + num_images,
             )
-            for det in dets
-        ]
 
         yield from bps.wait(group="wait_for_trigger")
         yield from bps.create()
@@ -80,12 +81,89 @@ def count_sim(dets: Sequence[adsimdetector.SimDetector], times: int = 1):
     yield from bps.unstage_all(*dets)
 
 
+async def test_detector_count(
+    test_adsimdetector: adsimdetector.SimDetector,
+    RE: RunEngine,
+):
+    docs = defaultdict(list)
+    RE.subscribe(lambda name, doc: docs[name].append(doc))
+    trigger_info = TriggerInfo(
+        number_of_triggers=10,
+        trigger=DetectorTrigger.INTERNAL,
+        frames_per_event=5,
+    )
+    RE(bps.prepare(test_adsimdetector, trigger_info, wait=True))
+    RE(count_sim([test_adsimdetector], times=5))
+
+    assert_emitted(
+        docs, start=1, descriptor=1, stream_resource=1, stream_datum=5, event=5, stop=1
+    )
+
+
+async def test_detector_fly(
+    test_adsimdetector: adsimdetector.SimDetector,
+    RE: RunEngine,
+):
+    trigger_info = TriggerInfo(
+        number_of_triggers=15,
+        trigger=DetectorTrigger.INTERNAL,
+        frames_per_event=3,
+    )
+    docs = defaultdict(list)
+    RE.subscribe(lambda name, doc: docs[name].append(doc))
+
+    def assert_n_stream_datums(
+        n: int, start: int | None = None, stop: int | None = None
+    ):
+        if n == 0:
+            assert "stream_datum" not in docs
+        else:
+            assert len(docs["stream_datum"]) == n
+            # check both detectors have the correct start/stop
+            seq_nums = docs["stream_datum"][n - 1]["seq_nums"]
+            assert seq_nums["start"] == start
+            assert seq_nums["stop"] == stop
+
+    @bpp.stage_decorator([test_adsimdetector])
+    @bpp.run_decorator()
+    def fly_plan():
+        yield from bps.prepare(test_adsimdetector, trigger_info, wait=True, group="prepare")
+        yield from bps.declare_stream(test_adsimdetector, name="primary")
+
+        yield from bps.trigger(test_adsimdetector, wait=False, group="trigger_cleanup")
+
+        # TODO: Tie this to some *random* number of images to be captured
+        set_mock_value(test_adsimdetector.fileio.num_captured, 5)
+
+        yield from bps.collect(test_adsimdetector)
+        assert_n_stream_datums(1, 1, 6)
+
+        # det[0] captures 10 frames, but we do not emit a StreamDatum as det[1] has not
+        set_mock_value(test_adsimdetector.fileio.num_captured, 10)
+        yield from bps.collect(test_adsimdetector)
+        assert_n_stream_datums(2, 6, 11)
+
+        set_mock_value(test_adsimdetector.fileio.num_captured, 15)
+        # emits stream datum for seq_num {8, 15}
+        yield from bps.collect(test_adsimdetector)
+        assert_n_stream_datums(3, 11, 16)
+
+        # Trigger has complete as all expected frames written
+        yield from bps.wait("trigger_cleanup")
+
+    RE(fly_plan())
+    assert_emitted(
+        docs, start=1, descriptor=1, stream_resource=1, stream_datum=3, stop=1
+    )
+
+
 async def test_two_detectors_fly_different_rate(
     two_test_adsimdetectors: Sequence[adsimdetector.SimDetector], RE: RunEngine
 ):
     trigger_info = TriggerInfo(
         number_of_triggers=15,
         trigger=DetectorTrigger.INTERNAL,
+        frames_per_event=3,
     )
     docs = defaultdict(list)
     RE.subscribe(lambda name, doc: docs[name].append(doc))
