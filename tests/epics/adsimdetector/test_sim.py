@@ -97,7 +97,7 @@ async def test_detector_count_failure(
     )
     RE(bps.prepare(test_adsimdetector, trigger_info, wait=True))
     try:
-        with pytest.raises(Exception) as exc:
+        with pytest.raises(FailedStatus) as exc:
             RE(count_sim([test_adsimdetector], times=1))
         assert isinstance(exc.value.__cause__, ValueError)
     finally:
