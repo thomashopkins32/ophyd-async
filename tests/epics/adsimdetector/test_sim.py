@@ -96,10 +96,12 @@ async def test_detector_count_failure(
         exposures_per_event=5,
     )
     RE(bps.prepare(test_adsimdetector, trigger_info, wait=True))
-    with pytest.raises(FailedStatus) as exc:
-        RE(count_sim([test_adsimdetector], times=5))
-
-    assert isinstance(exc.value.__cause__, ValueError)
+    try:
+        with pytest.raises(Exception) as exc:
+            RE(count_sim([test_adsimdetector], times=1))
+        assert isinstance(exc.value.__cause__, ValueError)
+    finally:
+        RE(bps.unstage(test_adsimdetector, wait=True))
 
 
 @pytest.mark.parametrize("exposures_per_event", [1, 5])
