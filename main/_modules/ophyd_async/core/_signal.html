@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ophyd_async.core._signal &#8212; ophyd-async 0.1.dev720+gf9f985a documentation</title>
+    <title>ophyd_async.core._signal &#8212; ophyd-async 0.1.dev748+g2984ea4 documentation</title>
   
   
   
@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../../_static/documentation_options.js?v=2ddf5859"></script>
+    <script src="../../../_static/documentation_options.js?v=07782000"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -134,8 +134,8 @@ window.addEventListener("load", () => mermaid.run());
       
     
     
-    <img src="../../../_static/ophyd-async-logo.svg" class="logo__image only-light" alt="ophyd-async 0.1.dev720+gf9f985a documentation - Home"/>
-    <img src="../../../_static/ophyd-async-logo.svg" class="logo__image only-dark pst-js-only" alt="ophyd-async 0.1.dev720+gf9f985a documentation - Home"/>
+    <img src="../../../_static/ophyd-async-logo.svg" class="logo__image only-light" alt="ophyd-async 0.1.dev748+g2984ea4 documentation - Home"/>
+    <img src="../../../_static/ophyd-async-logo.svg" class="logo__image only-dark pst-js-only" alt="ophyd-async 0.1.dev748+g2984ea4 documentation - Home"/>
   
   
 </a></div>
@@ -467,11 +467,13 @@ window.addEventListener("load", () => mermaid.run());
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncGenerator</span><span class="p">,</span> <span class="n">Awaitable</span><span class="p">,</span> <span class="n">Callable</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Generic</span><span class="p">,</span> <span class="n">cast</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Generic</span><span class="p">,</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">cast</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">bluesky.protocols</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Configurable</span><span class="p">,</span>
     <span class="n">Locatable</span><span class="p">,</span>
     <span class="n">Location</span><span class="p">,</span>
     <span class="n">Movable</span><span class="p">,</span>
@@ -486,7 +488,7 @@ window.addEventListener("load", () => mermaid.run());
 <span class="kn">from</span><span class="w"> </span><span class="nn">._protocol</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncReadable</span><span class="p">,</span> <span class="n">AsyncStageable</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">._signal_backend</span><span class="w"> </span><span class="kn">import</span> <span class="n">SignalBackend</span><span class="p">,</span> <span class="n">SignalDatatypeT</span><span class="p">,</span> <span class="n">SignalDatatypeV</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">._soft_signal_backend</span><span class="w"> </span><span class="kn">import</span> <span class="n">SoftSignalBackend</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">._status</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncStatus</span><span class="p">,</span> <span class="n">completed_status</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._status</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncStatus</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">._utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">CALCULATE_TIMEOUT</span><span class="p">,</span>
     <span class="n">DEFAULT_TIMEOUT</span><span class="p">,</span>
@@ -574,6 +576,9 @@ window.addEventListener("load", () => mermaid.run());
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connector</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">source</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">read</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
+
+
+<span class="n">SignalT</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;SignalT&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">Signal</span><span class="p">)</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">_SignalCache</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">SignalDatatypeT</span><span class="p">]):</span>
@@ -722,7 +727,9 @@ window.addEventListener("load", () => mermaid.run());
 
 <div class="viewcode-block" id="SignalR.subscribe">
 <a class="viewcode-back" href="../../../_api/ophyd_async/ophyd_async.core.html#ophyd_async.core.SignalR.subscribe">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">subscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">:</span> <span class="n">Callback</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Reading</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">subscribe</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">:</span> <span class="n">Callback</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Reading</span><span class="p">[</span><span class="n">SignalDatatypeT</span><span class="p">]]]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Subscribe to updates in the reading.</span>
 
 <span class="sd">        :param function: The callback function to call when the reading changes.</span>
@@ -1116,25 +1123,34 @@ window.addEventListener("load", () => mermaid.run());
 
     <span class="n">status</span> <span class="o">=</span> <span class="n">set_signal</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">set_value</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">set_timeout</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">match_value</span><span class="p">):</span>
+        <span class="n">matcher</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">SignalDatatypeV</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">match_value</span>  <span class="c1"># type: ignore</span>
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">matcher</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">value</span> <span class="o">==</span> <span class="n">match_value</span>
+
+        <span class="n">matcher</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;equals_</span><span class="si">{</span><span class="n">match_value</span><span class="si">}</span><span class="s2">&quot;</span>
+
     <span class="c1"># If the value was the same as before no need to wait for it to change</span>
-    <span class="k">if</span> <span class="n">current_value</span> <span class="o">!=</span> <span class="n">match_value</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">matcher</span><span class="p">(</span><span class="n">current_value</span><span class="p">):</span>
 
         <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_wait_for_value</span><span class="p">():</span>
             <span class="k">async</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values_gen</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="n">match_value</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">matcher</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
                     <span class="k">break</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">wait_for</span><span class="p">(</span><span class="n">_wait_for_value</span><span class="p">(),</span> <span class="n">timeout</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">wait_for_set_completion</span><span class="p">:</span>
                 <span class="k">await</span> <span class="n">status</span>
-            <span class="k">return</span> <span class="n">status</span>
         <span class="k">except</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TimeoutError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">match_signal</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> didn&#39;t match </span><span class="si">{</span><span class="n">match_value</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">timeout</span><span class="si">}</span><span class="s2">s&quot;</span>
+            <span class="k">raise</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">match_signal</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> value didn&#39;t match value from&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">matcher</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">() in </span><span class="si">{</span><span class="n">timeout</span><span class="si">}</span><span class="s2">s&quot;</span>
             <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
 
-    <span class="k">return</span> <span class="n">completed_status</span><span class="p">()</span></div>
+    <span class="k">return</span> <span class="n">status</span></div>
 
 
 
@@ -1221,6 +1237,48 @@ window.addEventListener("load", () => mermaid.run());
         <span class="n">attr_signals</span> <span class="o">=</span> <span class="n">walk_rw_signals</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">path_prefix</span><span class="o">=</span><span class="n">dot_path</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span>
         <span class="n">signals</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr_signals</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">signals</span></div>
+
+
+
+<div class="viewcode-block" id="walk_config_signals">
+<a class="viewcode-back" href="../../../_api/ophyd_async/ophyd_async.core.html#ophyd_async.core.walk_config_signals">[docs]</a>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">walk_config_signals</span><span class="p">(</span>
+    <span class="n">device</span><span class="p">:</span> <span class="n">Device</span><span class="p">,</span> <span class="n">path_prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">SignalRW</span><span class="p">[</span><span class="n">Any</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve all configuration signals from a device.</span>
+
+<span class="sd">    Stores retrieved signals with their dotted attribute paths in a dictionary. Used as</span>
+<span class="sd">    part of saving and loading a device.</span>
+
+<span class="sd">    :param device: Device to retrieve configuration signals from.</span>
+<span class="sd">    :param path_prefix: For internal use, leave blank when calling the method.</span>
+<span class="sd">    :return:</span>
+<span class="sd">        A dictionary matching the string attribute path of a SignalRW with the</span>
+<span class="sd">        signal itself.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">signals</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">SignalRW</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">config_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">Configurable</span><span class="p">):</span>
+        <span class="n">configuration</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">read_configuration</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isawaitable</span><span class="p">(</span><span class="n">configuration</span><span class="p">):</span>
+            <span class="n">configuration</span> <span class="o">=</span> <span class="k">await</span> <span class="n">configuration</span>
+        <span class="n">config_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">configuration</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">attr_name</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">device</span><span class="o">.</span><span class="n">children</span><span class="p">():</span>
+        <span class="n">dot_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path_prefix</span><span class="si">}{</span><span class="n">attr_name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">SignalRW</span><span class="p">)</span> <span class="ow">and</span> <span class="n">attr</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">config_names</span><span class="p">:</span>
+            <span class="n">signals</span><span class="p">[</span><span class="n">dot_path</span><span class="p">]</span> <span class="o">=</span> <span class="n">attr</span>
+        <span class="n">signals</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="k">await</span> <span class="n">walk_config_signals</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">path_prefix</span><span class="o">=</span><span class="n">dot_path</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">signals</span></div>
+
+
+
+<div class="viewcode-block" id="Ignore">
+<a class="viewcode-back" href="../../../_api/ophyd_async/ophyd_async.core.html#ophyd_async.core.Ignore">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Ignore</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Annotation to ignore a signal when connecting a device.&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
 
 </pre></div>
 

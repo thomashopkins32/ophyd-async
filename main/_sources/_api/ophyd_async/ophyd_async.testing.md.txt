@@ -43,6 +43,22 @@
   - ```{autodoc2-docstring} ophyd_async.testing._assert.StatusWatcher
     :summary:
     ```
+* - {py:obj}`BeamstopPosition <ophyd_async.testing._single_derived.BeamstopPosition>`
+  - ```{autodoc2-docstring} ophyd_async.testing._single_derived.BeamstopPosition
+    :summary:
+    ```
+* - {py:obj}`Exploder <ophyd_async.testing._single_derived.Exploder>`
+  - ```{autodoc2-docstring} ophyd_async.testing._single_derived.Exploder
+    :summary:
+    ```
+* - {py:obj}`MovableBeamstop <ophyd_async.testing._single_derived.MovableBeamstop>`
+  - ```{autodoc2-docstring} ophyd_async.testing._single_derived.MovableBeamstop
+    :summary:
+    ```
+* - {py:obj}`ReadOnlyBeamstop <ophyd_async.testing._single_derived.ReadOnlyBeamstop>`
+  - ```{autodoc2-docstring} ophyd_async.testing._single_derived.ReadOnlyBeamstop
+    :summary:
+    ```
 ````
 
 ### Functions
@@ -107,6 +123,14 @@
   - ```{autodoc2-docstring} ophyd_async.testing._wait_for_pending.wait_for_pending_wakeups
     :summary:
     ```
+* - {py:obj}`int_array_value <ophyd_async.testing._one_of_everything.int_array_value>`
+  - ```{autodoc2-docstring} ophyd_async.testing._one_of_everything.int_array_value
+    :summary:
+    ```
+* - {py:obj}`float_array_value <ophyd_async.testing._one_of_everything.float_array_value>`
+  - ```{autodoc2-docstring} ophyd_async.testing._one_of_everything.float_array_value
+    :summary:
+    ```
 ````
 
 ### API
@@ -126,7 +150,7 @@
 ```
 ````
 
-````{py:function} assert_reading(readable: ~ophyd_async.core.AsyncReadable, expected_reading: dict[str, ~bluesky.protocols.Reading]) -> None
+````{py:function} assert_reading(readable: ~ophyd_async.core.AsyncReadable, expected_reading: ~collections.abc.Mapping[str, ~collections.abc.Mapping[str, ~typing.Any]]) -> None
 :canonical: ophyd_async.testing._assert.assert_reading
 :async:
 
@@ -134,7 +158,7 @@
 ```
 ````
 
-````{py:function} assert_configuration(configurable: ~ophyd_async.core.AsyncConfigurable, configuration: dict[str, ~bluesky.protocols.Reading]) -> None
+````{py:function} assert_configuration(configurable: ~ophyd_async.core.AsyncConfigurable, configuration: dict[str, dict[str, ~typing.Any]]) -> None
 :canonical: ophyd_async.testing._assert.assert_configuration
 :async:
 
@@ -319,7 +343,7 @@ Bases: {py:obj}`ophyd_async.core.Table`
 
 `````
 
-````{py:class} OneOfEverythingDevice(name='')
+`````{py:class} OneOfEverythingDevice(name='')
 :canonical: ophyd_async.testing._one_of_everything.OneOfEverythingDevice
 
 Bases: {py:obj}`ophyd_async.core.StandardReadable`
@@ -327,7 +351,16 @@ Bases: {py:obj}`ophyd_async.core.StandardReadable`
 ```{autodoc2-docstring} ophyd_async.testing._one_of_everything.OneOfEverythingDevice
 ```
 
+````{py:method} get_signal_values()
+:canonical: ophyd_async.testing._one_of_everything.OneOfEverythingDevice.get_signal_values
+:async:
+
+```{autodoc2-docstring} ophyd_async.testing._one_of_everything.OneOfEverythingDevice.get_signal_values
+```
+
 ````
+
+`````
 
 `````{py:class} ParentOfEverythingDevice(name='')
 :canonical: ophyd_async.testing._one_of_everything.ParentOfEverythingDevice
@@ -403,3 +436,77 @@ Bases: {py:obj}`ophyd_async.core.Watcher`\[{py:obj}`ophyd_async.testing._utils.T
 ````
 
 `````
+
+````{py:function} int_array_value(dtype: type[~ophyd_async.core.DTypeScalar_co])
+:canonical: ophyd_async.testing._one_of_everything.int_array_value
+
+```{autodoc2-docstring} ophyd_async.testing._one_of_everything.int_array_value
+```
+````
+
+````{py:function} float_array_value(dtype: type[~ophyd_async.core.DTypeScalar_co])
+:canonical: ophyd_async.testing._one_of_everything.float_array_value
+
+```{autodoc2-docstring} ophyd_async.testing._one_of_everything.float_array_value
+```
+````
+
+`````{py:class} BeamstopPosition()
+:canonical: ophyd_async.testing._single_derived.BeamstopPosition
+
+Bases: {py:obj}`ophyd_async.core.StrictEnum`
+
+```{autodoc2-docstring} ophyd_async.testing._single_derived.BeamstopPosition
+```
+
+````{py:attribute} IN_POSITION
+:canonical: ophyd_async.testing._single_derived.BeamstopPosition.IN_POSITION
+:value: >
+   'In position'
+
+```{autodoc2-docstring} ophyd_async.testing._single_derived.BeamstopPosition.IN_POSITION
+```
+
+````
+
+````{py:attribute} OUT_OF_POSITION
+:canonical: ophyd_async.testing._single_derived.BeamstopPosition.OUT_OF_POSITION
+:value: >
+   'Out of position'
+
+```{autodoc2-docstring} ophyd_async.testing._single_derived.BeamstopPosition.OUT_OF_POSITION
+```
+
+````
+
+`````
+
+````{py:class} Exploder(num_signals: int, name='')
+:canonical: ophyd_async.testing._single_derived.Exploder
+
+Bases: {py:obj}`ophyd_async.core.StandardReadable`
+
+```{autodoc2-docstring} ophyd_async.testing._single_derived.Exploder
+```
+
+````
+
+````{py:class} MovableBeamstop(name='')
+:canonical: ophyd_async.testing._single_derived.MovableBeamstop
+
+Bases: {py:obj}`ophyd_async.core.Device`
+
+```{autodoc2-docstring} ophyd_async.testing._single_derived.MovableBeamstop
+```
+
+````
+
+````{py:class} ReadOnlyBeamstop(name='')
+:canonical: ophyd_async.testing._single_derived.ReadOnlyBeamstop
+
+Bases: {py:obj}`ophyd_async.core.Device`
+
+```{autodoc2-docstring} ophyd_async.testing._single_derived.ReadOnlyBeamstop
+```
+
+````
