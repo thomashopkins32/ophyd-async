@@ -1028,13 +1028,13 @@ Bases: {py:obj}`ophyd_async.epics.adcore._core_io.NDPluginBaseIO`
 
 ````
 
-````{py:attribute} total_array
-:canonical: ophyd_async.epics.adcore._core_io.NDPluginStatsIO.total_array
-:type: ~typing.Annotated[~ophyd_async.core.SignalRW[float], ophyd_async.epics.core.PvSuffix.rbv('TotalArray')]
+````{py:attribute} total
+:canonical: ophyd_async.epics.adcore._core_io.NDPluginStatsIO.total
+:type: ~typing.Annotated[~ophyd_async.core.SignalR[float], ophyd_async.epics.core.PvSuffix.rbv('Total')]
 :value: >
    None
 
-```{autodoc2-docstring} ophyd_async.epics.adcore._core_io.NDPluginStatsIO.total_array
+```{autodoc2-docstring} ophyd_async.epics.adcore._core_io.NDPluginStatsIO.total
 ```
 
 ````
@@ -1074,7 +1074,7 @@ Bases: {py:obj}`ophyd_async.epics.adcore._core_io.NDPluginBaseIO`
 
 ````{py:attribute} profile_size_x
 :canonical: ophyd_async.epics.adcore._core_io.NDPluginStatsIO.profile_size_x
-:type: ~typing.Annotated[~ophyd_async.core.SignalRW[int], ophyd_async.epics.core.PvSuffix.rbv('ProfileSizeX')]
+:type: ~typing.Annotated[~ophyd_async.core.SignalR[int], ophyd_async.epics.core.PvSuffix.rbv('ProfileSizeX')]
 :value: >
    None
 
@@ -1085,7 +1085,7 @@ Bases: {py:obj}`ophyd_async.epics.adcore._core_io.NDPluginBaseIO`
 
 ````{py:attribute} profile_size_y
 :canonical: ophyd_async.epics.adcore._core_io.NDPluginStatsIO.profile_size_y
-:type: ~typing.Annotated[~ophyd_async.core.SignalRW[int], ophyd_async.epics.core.PvSuffix.rbv('ProfileSizeY')]
+:type: ~typing.Annotated[~ophyd_async.core.SignalR[int], ophyd_async.epics.core.PvSuffix.rbv('ProfileSizeY')]
 :value: >
    None
 
@@ -1254,7 +1254,7 @@ Bases: {py:obj}`ophyd_async.core.DetectorController`, {py:obj}`typing.Generic`\[
 
 ````
 
-````{py:method} start_acquiring_driver_and_ensure_status() -> ~ophyd_async.core.AsyncStatus
+````{py:method} start_acquiring_driver_and_ensure_status(start_timeout: float = DEFAULT_TIMEOUT, state_timeout: float = DEFAULT_TIMEOUT) -> ~ophyd_async.core.AsyncStatus
 :canonical: ophyd_async.epics.adcore._core_logic.ADBaseController.start_acquiring_driver_and_ensure_status
 :async:
 
@@ -1302,7 +1302,7 @@ Bases: {py:obj}`ophyd_async.core._detector.DetectorWriter`, {py:obj}`typing.Gene
 
 ````
 
-````{py:method} open(name: str, multiplier: int = 1) -> dict[str, ~event_model.DataKey]
+````{py:method} open(name: str, exposures_per_event: ~pydantic.PositiveInt = 1) -> dict[str, ~event_model.DataKey]
 :canonical: ophyd_async.epics.adcore._core_writer.ADWriter.open
 :async:
 
@@ -1376,7 +1376,7 @@ Bases: {py:obj}`ophyd_async.epics.adcore._core_writer.ADWriter`\[{py:obj}`ophyd_
 
 ````
 
-````{py:method} open(name: str, multiplier: int = 1) -> dict[str, ~event_model.DataKey]
+````{py:method} open(name: str, exposures_per_event: ~pydantic.PositiveInt = 1) -> dict[str, ~event_model.DataKey]
 :canonical: ophyd_async.epics.adcore._hdf_writer.ADHDFWriter.open
 :async:
 
@@ -1469,7 +1469,7 @@ Bases: {py:obj}`ophyd_async.core.StandardReadable`, {py:obj}`bluesky.protocols.T
 `````{py:class} ADBaseDataType()
 :canonical: ophyd_async.epics.adcore._utils.ADBaseDataType
 
-Bases: {py:obj}`ophyd_async.core.StrictEnum`
+Bases: {py:obj}`ophyd_async.core.SupersetEnum`
 
 ```{autodoc2-docstring} ophyd_async.epics.adcore._utils.ADBaseDataType
 ```
@@ -1570,6 +1570,15 @@ Bases: {py:obj}`ophyd_async.core.StrictEnum`
    'Float64'
 
 ```{autodoc2-docstring} ophyd_async.epics.adcore._utils.ADBaseDataType.FLOAT64
+```
+
+````
+
+````{py:attribute} UNDEFINED
+:canonical: ophyd_async.epics.adcore._utils.ADBaseDataType.UNDEFINED
+:value: <Multiline-String>
+
+```{autodoc2-docstring} ophyd_async.epics.adcore._utils.ADBaseDataType.UNDEFINED
 ```
 
 ````
