@@ -37,24 +37,34 @@
     ```
 ````
 
-### Functions
+### Data
 
 ````{list-table}
 :class: autosummary longtable
 :align: left
 
-* - {py:obj}`start_ioc_subprocess <ophyd_async.epics.demo._ioc.start_ioc_subprocess>`
-  - ```{autodoc2-docstring} ophyd_async.epics.demo._ioc.start_ioc_subprocess
+* - {py:obj}`IOC <ophyd_async.epics.demo.IOC>`
+  - ```{autodoc2-docstring} ophyd_async.epics.demo.IOC
     :summary:
     ```
 ````
 
 ### API
 
-`````{py:class} DemoMotor(prefix: str, with_pvi: bool = False, name: str = '')
+````{py:data} IOC
+:canonical: ophyd_async.epics.demo.IOC
+:value: >
+   None
+
+```{autodoc2-docstring} ophyd_async.epics.demo.IOC
+```
+
+````
+
+`````{py:class} DemoMotor(prefix: str = '', with_pvi: bool = False, name: str = '', connector: ~ophyd_async.core.DeviceConnector | None = None)
 :canonical: ophyd_async.epics.demo._motor.DemoMotor
 
-Bases: {py:obj}`ophyd_async.epics.core.EpicsDevice`, {py:obj}`ophyd_async.core.StandardReadable`, {py:obj}`bluesky.protocols.Movable`, {py:obj}`bluesky.protocols.Stoppable`
+Bases: {py:obj}`ophyd_async.epics.core.EpicsDevice`, {py:obj}`ophyd_async.core.StandardReadable`, {py:obj}`ophyd_async.core.StandardMovable`\[{py:obj}`float`\]
 
 ```{autodoc2-docstring} ophyd_async.epics.demo._motor.DemoMotor
 ```
@@ -81,17 +91,6 @@ Bases: {py:obj}`ophyd_async.epics.core.EpicsDevice`, {py:obj}`ophyd_async.core.S
 
 ````
 
-````{py:attribute} units
-:canonical: ophyd_async.epics.demo._motor.DemoMotor.units
-:type: ~typing.Annotated[~ophyd_async.core.SignalR[str], PvSuffix('~Readback.EGU'), ~ophyd_async.core.StandardReadableFormat.CONFIG_SIGNAL]
-:value: >
-   None
-
-```{autodoc2-docstring} ophyd_async.epics.demo._motor.DemoMotor.units
-```
-
-````
-
 ````{py:attribute} setpoint
 :canonical: ophyd_async.epics.demo._motor.DemoMotor.setpoint
 :type: ~typing.Annotated[~ophyd_async.core.SignalRW[float], PvSuffix('Setpoint')]
@@ -103,20 +102,9 @@ Bases: {py:obj}`ophyd_async.epics.core.EpicsDevice`, {py:obj}`ophyd_async.core.S
 
 ````
 
-````{py:attribute} precision
-:canonical: ophyd_async.epics.demo._motor.DemoMotor.precision
-:type: ~typing.Annotated[~ophyd_async.core.SignalR[int], PvSuffix('~Readback.PREC')]
-:value: >
-   None
-
-```{autodoc2-docstring} ophyd_async.epics.demo._motor.DemoMotor.precision
-```
-
-````
-
 ````{py:attribute} stop_
 :canonical: ophyd_async.epics.demo._motor.DemoMotor.stop_
-:type: ~typing.Annotated[~ophyd_async.core.SignalX, PvSuffix('~Stop.PROC')]
+:type: ~typing.Annotated[~ophyd_async.core.TriggerableCommand, PvSuffix('~Stop.PROC')]
 :value: >
    None
 
@@ -125,43 +113,47 @@ Bases: {py:obj}`ophyd_async.epics.core.EpicsDevice`, {py:obj}`ophyd_async.core.S
 
 ````
 
-````{py:method} set_name(name: str, *, child_name_separator: str | None = None) -> None
-:canonical: ophyd_async.epics.demo._motor.DemoMotor.set_name
+````{py:method} movable_logic() -> ~ophyd_async.core.MovableLogic
+:canonical: ophyd_async.epics.demo._motor.DemoMotor.movable_logic
 
-```{autodoc2-docstring} ophyd_async.epics.demo._motor.DemoMotor.set_name
-```
-
-````
-
-````{py:method} set(new_position: float, timeout: ~ophyd_async.core.CalculatableTimeout = CALCULATE_TIMEOUT)
-:canonical: ophyd_async.epics.demo._motor.DemoMotor.set
-:async:
-
-```{autodoc2-docstring} ophyd_async.epics.demo._motor.DemoMotor.set
-```
-
-````
-
-````{py:method} stop(success=True)
-:canonical: ophyd_async.epics.demo._motor.DemoMotor.stop
-:async:
-
-```{autodoc2-docstring} ophyd_async.epics.demo._motor.DemoMotor.stop
+```{autodoc2-docstring} ophyd_async.epics.demo._motor.DemoMotor.movable_logic
 ```
 
 ````
 
 `````
 
-````{py:class} DemoStage(prefix: str, name='')
+`````{py:class} DemoStage(name: str = '', connector: ~ophyd_async.core._device.DeviceConnector | None = None)
 :canonical: ophyd_async.epics.demo._stage.DemoStage
 
-Bases: {py:obj}`ophyd_async.core.StandardReadable`
+Bases: {py:obj}`ophyd_async.core.StandardReadable`, {py:obj}`ophyd_async.epics.core.EpicsDevice`
 
 ```{autodoc2-docstring} ophyd_async.epics.demo._stage.DemoStage
 ```
 
+````{py:attribute} x
+:canonical: ophyd_async.epics.demo._stage.DemoStage.x
+:type: ~typing.Annotated[~ophyd_async.epics.demo._motor.DemoMotor, PvSuffix('X:'), ~ophyd_async.core.StandardReadableFormat.CHILD]
+:value: >
+   None
+
+```{autodoc2-docstring} ophyd_async.epics.demo._stage.DemoStage.x
+```
+
 ````
+
+````{py:attribute} y
+:canonical: ophyd_async.epics.demo._stage.DemoStage.y
+:type: ~typing.Annotated[~ophyd_async.epics.demo._motor.DemoMotor, PvSuffix('Y:'), ~ophyd_async.core.StandardReadableFormat.CHILD]
+:value: >
+   None
+
+```{autodoc2-docstring} ophyd_async.epics.demo._stage.DemoStage.y
+```
+
+````
+
+`````
 
 `````{py:class} EnergyMode()
 :canonical: ophyd_async.epics.demo._point_detector_channel.EnergyMode
@@ -246,7 +238,7 @@ Bases: {py:obj}`ophyd_async.core.StandardReadable`, {py:obj}`ophyd_async.epics.c
 
 ````{py:attribute} start
 :canonical: ophyd_async.epics.demo._point_detector.DemoPointDetector.start
-:type: ~typing.Annotated[~ophyd_async.core.SignalX, PvSuffix('~Start.PROC')]
+:type: ~typing.Annotated[~ophyd_async.core.TriggerableCommand, PvSuffix('~Start.PROC')]
 :value: >
    None
 
@@ -268,7 +260,7 @@ Bases: {py:obj}`ophyd_async.core.StandardReadable`, {py:obj}`ophyd_async.epics.c
 
 ````{py:attribute} reset
 :canonical: ophyd_async.epics.demo._point_detector.DemoPointDetector.reset
-:type: ~typing.Annotated[~ophyd_async.core.SignalX, PvSuffix('~Reset.PROC')]
+:type: ~typing.Annotated[~ophyd_async.core.TriggerableCommand, PvSuffix('~Reset.PROC')]
 :value: >
    None
 
@@ -287,10 +279,3 @@ Bases: {py:obj}`ophyd_async.core.StandardReadable`, {py:obj}`ophyd_async.epics.c
 ````
 
 `````
-
-````{py:function} start_ioc_subprocess(prefix: str, num_channels: int) -> ~ophyd_async.epics.testing.TestingIOC
-:canonical: ophyd_async.epics.demo._ioc.start_ioc_subprocess
-
-```{autodoc2-docstring} ophyd_async.epics.demo._ioc.start_ioc_subprocess
-```
-````

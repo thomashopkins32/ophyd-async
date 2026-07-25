@@ -19,16 +19,28 @@
   - ```{autodoc2-docstring} ophyd_async.epics.motor.Motor
     :summary:
     ```
+* - {py:obj}`InstantMotorMock <ophyd_async.epics.motor.InstantMotorMock>`
+  - ```{autodoc2-docstring} ophyd_async.epics.motor.InstantMotorMock
+    :summary:
+    ```
+* - {py:obj}`OffsetMode <ophyd_async.epics.motor.OffsetMode>`
+  - ```{autodoc2-docstring} ophyd_async.epics.motor.OffsetMode
+    :summary:
+    ```
+* - {py:obj}`UseSetMode <ophyd_async.epics.motor.UseSetMode>`
+  - ```{autodoc2-docstring} ophyd_async.epics.motor.UseSetMode
+    :summary:
+    ```
 ````
 
 ### API
 
-````{py:exception} MotorLimitsException()
-:canonical: ophyd_async.epics.motor.MotorLimitsException
+````{py:exception} MotorLimitsError()
+:canonical: ophyd_async.epics.motor.MotorLimitsError
 
 Bases: {py:obj}`Exception`
 
-```{autodoc2-docstring} ophyd_async.epics.motor.MotorLimitsException
+```{autodoc2-docstring} ophyd_async.epics.motor.MotorLimitsError
 ```
 
 ````
@@ -36,84 +48,102 @@ Bases: {py:obj}`Exception`
 `````{py:class} Motor(prefix: str, name='')
 :canonical: ophyd_async.epics.motor.Motor
 
-Bases: {py:obj}`ophyd_async.core.StandardReadable`, {py:obj}`bluesky.protocols.Locatable`\[{py:obj}`float`\], {py:obj}`bluesky.protocols.Stoppable`, {py:obj}`bluesky.protocols.Flyable`, {py:obj}`bluesky.protocols.Preparable`, {py:obj}`bluesky.protocols.Subscribable`\[{py:obj}`float`\]
+Bases: {py:obj}`ophyd_async.core.StandardMovable`\[{py:obj}`float`\], {py:obj}`ophyd_async.core.StandardFlyable`\[{py:obj}`ophyd_async.core.FlyMotorInfo`\, {py:obj}`ophyd_async.epics.motor.MotorFlyCtx`\], {py:obj}`ophyd_async.core.StandardReadable`
 
 ```{autodoc2-docstring} ophyd_async.epics.motor.Motor
 ```
 
-````{py:method} set_name(name: str, *, child_name_separator: str | None = None) -> None
-:canonical: ophyd_async.epics.motor.Motor.set_name
+````{py:method} movable_logic() -> ~ophyd_async.epics.motor.MotorFlyableMovableLogic
+:canonical: ophyd_async.epics.motor.Motor.movable_logic
 
-```{autodoc2-docstring} ophyd_async.epics.motor.Motor.set_name
+```{autodoc2-docstring} ophyd_async.epics.motor.Motor.movable_logic
 ```
 
 ````
 
-````{py:method} prepare(value: ~ophyd_async.core.FlyMotorInfo)
-:canonical: ophyd_async.epics.motor.Motor.prepare
+````{py:method} flyable_logic() -> ~ophyd_async.epics.motor.MotorFlyableMovableLogic
+:canonical: ophyd_async.epics.motor.Motor.flyable_logic
+
+```{autodoc2-docstring} ophyd_async.epics.motor.Motor.flyable_logic
+```
+
+````
+
+`````
+
+`````{py:class} InstantMotorMock(name: str = '', parent: ~ophyd_async.core._device.DeviceMock | None = None)
+:canonical: ophyd_async.epics.motor.InstantMotorMock
+
+Bases: {py:obj}`ophyd_async.core.DeviceMock`\[{py:obj}`Motor`\]
+
+```{autodoc2-docstring} ophyd_async.epics.motor.InstantMotorMock
+```
+
+````{py:method} connect(device: ~ophyd_async.epics.motor.Motor) -> None
+:canonical: ophyd_async.epics.motor.InstantMotorMock.connect
 :async:
 
-```{autodoc2-docstring} ophyd_async.epics.motor.Motor.prepare
+```{autodoc2-docstring} ophyd_async.epics.motor.InstantMotorMock.connect
 ```
 
 ````
 
-````{py:method} kickoff()
-:canonical: ophyd_async.epics.motor.Motor.kickoff
-:async:
+`````
 
-```{autodoc2-docstring} ophyd_async.epics.motor.Motor.kickoff
+`````{py:class} OffsetMode()
+:canonical: ophyd_async.epics.motor.OffsetMode
+
+Bases: {py:obj}`ophyd_async.core.StrictEnum`
+
+```{autodoc2-docstring} ophyd_async.epics.motor.OffsetMode
+```
+
+````{py:attribute} VARIABLE
+:canonical: ophyd_async.epics.motor.OffsetMode.VARIABLE
+:value: >
+   'Variable'
+
+```{autodoc2-docstring} ophyd_async.epics.motor.OffsetMode.VARIABLE
 ```
 
 ````
 
-````{py:method} complete() -> ~ophyd_async.core.WatchableAsyncStatus
-:canonical: ophyd_async.epics.motor.Motor.complete
+````{py:attribute} FROZEN
+:canonical: ophyd_async.epics.motor.OffsetMode.FROZEN
+:value: >
+   'Frozen'
 
-```{autodoc2-docstring} ophyd_async.epics.motor.Motor.complete
+```{autodoc2-docstring} ophyd_async.epics.motor.OffsetMode.FROZEN
 ```
 
 ````
 
-````{py:method} set(new_position: float, timeout: ~ophyd_async.core.CalculatableTimeout = CALCULATE_TIMEOUT)
-:canonical: ophyd_async.epics.motor.Motor.set
-:async:
+`````
 
-```{autodoc2-docstring} ophyd_async.epics.motor.Motor.set
+`````{py:class} UseSetMode()
+:canonical: ophyd_async.epics.motor.UseSetMode
+
+Bases: {py:obj}`ophyd_async.core.StrictEnum`
+
+```{autodoc2-docstring} ophyd_async.epics.motor.UseSetMode
+```
+
+````{py:attribute} USE
+:canonical: ophyd_async.epics.motor.UseSetMode.USE
+:value: >
+   'Use'
+
+```{autodoc2-docstring} ophyd_async.epics.motor.UseSetMode.USE
 ```
 
 ````
 
-````{py:method} stop(success=False)
-:canonical: ophyd_async.epics.motor.Motor.stop
-:async:
+````{py:attribute} SET
+:canonical: ophyd_async.epics.motor.UseSetMode.SET
+:value: >
+   'Set'
 
-```{autodoc2-docstring} ophyd_async.epics.motor.Motor.stop
-```
-
-````
-
-````{py:method} locate() -> ~bluesky.protocols.Location[float]
-:canonical: ophyd_async.epics.motor.Motor.locate
-:async:
-
-```{autodoc2-docstring} ophyd_async.epics.motor.Motor.locate
-```
-
-````
-
-````{py:method} subscribe(function: ~ophyd_async.core.Callback[dict[str, ~bluesky.protocols.Reading[float]]]) -> None
-:canonical: ophyd_async.epics.motor.Motor.subscribe
-
-```{autodoc2-docstring} ophyd_async.epics.motor.Motor.subscribe
-```
-
-````
-
-````{py:method} clear_sub(function: ~ophyd_async.core.Callback[dict[str, ~bluesky.protocols.Reading[float]]]) -> None
-:canonical: ophyd_async.epics.motor.Motor.clear_sub
-
-```{autodoc2-docstring} ophyd_async.epics.motor.Motor.clear_sub
+```{autodoc2-docstring} ophyd_async.epics.motor.UseSetMode.SET
 ```
 
 ````

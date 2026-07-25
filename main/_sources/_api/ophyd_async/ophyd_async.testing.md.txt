@@ -15,8 +15,20 @@
 :class: autosummary longtable
 :align: left
 
+* - {py:obj}`ManagedSubprocess <ophyd_async.testing._subprocess.ManagedSubprocess>`
+  - ```{autodoc2-docstring} ophyd_async.testing._subprocess.ManagedSubprocess
+    :summary:
+    ```
 * - {py:obj}`ExampleEnum <ophyd_async.testing._one_of_everything.ExampleEnum>`
   - ```{autodoc2-docstring} ophyd_async.testing._one_of_everything.ExampleEnum
+    :summary:
+    ```
+* - {py:obj}`ExampleSubsetEnum <ophyd_async.testing._one_of_everything.ExampleSubsetEnum>`
+  - ```{autodoc2-docstring} ophyd_async.testing._one_of_everything.ExampleSubsetEnum
+    :summary:
+    ```
+* - {py:obj}`ExampleSupersetEnum <ophyd_async.testing._one_of_everything.ExampleSupersetEnum>`
+  - ```{autodoc2-docstring} ophyd_async.testing._one_of_everything.ExampleSupersetEnum
     :summary:
     ```
 * - {py:obj}`ExampleTable <ophyd_async.testing._one_of_everything.ExampleTable>`
@@ -95,36 +107,16 @@
   - ```{autodoc2-docstring} ophyd_async.testing._assert.partial_reading
     :summary:
     ```
-* - {py:obj}`get_mock <ophyd_async.testing._mock_signal_utils.get_mock>`
-  - ```{autodoc2-docstring} ophyd_async.testing._mock_signal_utils.get_mock
-    :summary:
-    ```
-* - {py:obj}`set_mock_value <ophyd_async.testing._mock_signal_utils.set_mock_value>`
-  - ```{autodoc2-docstring} ophyd_async.testing._mock_signal_utils.set_mock_value
-    :summary:
-    ```
-* - {py:obj}`set_mock_values <ophyd_async.testing._mock_signal_utils.set_mock_values>`
-  - ```{autodoc2-docstring} ophyd_async.testing._mock_signal_utils.set_mock_values
-    :summary:
-    ```
-* - {py:obj}`get_mock_put <ophyd_async.testing._mock_signal_utils.get_mock_put>`
-  - ```{autodoc2-docstring} ophyd_async.testing._mock_signal_utils.get_mock_put
-    :summary:
-    ```
-* - {py:obj}`callback_on_mock_put <ophyd_async.testing._mock_signal_utils.callback_on_mock_put>`
-  - ```{autodoc2-docstring} ophyd_async.testing._mock_signal_utils.callback_on_mock_put
-    :summary:
-    ```
-* - {py:obj}`mock_puts_blocked <ophyd_async.testing._mock_signal_utils.mock_puts_blocked>`
-  - ```{autodoc2-docstring} ophyd_async.testing._mock_signal_utils.mock_puts_blocked
-    :summary:
-    ```
-* - {py:obj}`set_mock_put_proceeds <ophyd_async.testing._mock_signal_utils.set_mock_put_proceeds>`
-  - ```{autodoc2-docstring} ophyd_async.testing._mock_signal_utils.set_mock_put_proceeds
-    :summary:
-    ```
 * - {py:obj}`wait_for_pending_wakeups <ophyd_async.testing._wait_for_pending.wait_for_pending_wakeups>`
   - ```{autodoc2-docstring} ophyd_async.testing._wait_for_pending.wait_for_pending_wakeups
+    :summary:
+    ```
+* - {py:obj}`find_free_port <ophyd_async.testing._subprocess.find_free_port>`
+  - ```{autodoc2-docstring} ophyd_async.testing._subprocess.find_free_port
+    :summary:
+    ```
+* - {py:obj}`start_subprocess <ophyd_async.testing._subprocess.start_subprocess>`
+  - ```{autodoc2-docstring} ophyd_async.testing._subprocess.start_subprocess
     :summary:
     ```
 * - {py:obj}`int_array_value <ophyd_async.testing._one_of_everything.int_array_value>`
@@ -133,6 +125,10 @@
     ```
 * - {py:obj}`float_array_value <ophyd_async.testing._one_of_everything.float_array_value>`
   - ```{autodoc2-docstring} ophyd_async.testing._one_of_everything.float_array_value
+    :summary:
+    ```
+* - {py:obj}`assert_has_calls <ophyd_async.testing._assert.assert_has_calls>`
+  - ```{autodoc2-docstring} ophyd_async.testing._assert.assert_has_calls
     :summary:
     ```
 ````
@@ -162,7 +158,7 @@
 ```
 ````
 
-````{py:function} assert_configuration(configurable: ~ophyd_async.core.AsyncConfigurable, expected_configuration: dict[str, dict[str, ~typing.Any]], full_match: bool = True) -> None
+````{py:function} assert_configuration(configurable: ~ophyd_async.core.AsyncConfigurable, expected_configuration: ~collections.abc.Mapping[str, ~collections.abc.Mapping[str, ~typing.Any]], full_match: bool = True) -> None
 :canonical: ophyd_async.testing._assert.assert_configuration
 :async:
 
@@ -178,66 +174,17 @@
 ```
 ````
 
-````{py:function} assert_emitted(docs: dict[str, list[dict]], **numbers: int)
+````{py:function} assert_emitted(docs: ~collections.abc.Mapping[str, list[dict]], **numbers: int)
 :canonical: ophyd_async.testing._assert.assert_emitted
 
 ```{autodoc2-docstring} ophyd_async.testing._assert.assert_emitted
 ```
 ````
 
-````{py:function} partial_reading(val: ~typing.Any) -> dict[str, ~typing.Any]
+````{py:function} partial_reading(val: ~typing.Any) -> ~collections.abc.Mapping[str, ~typing.Any]
 :canonical: ophyd_async.testing._assert.partial_reading
 
 ```{autodoc2-docstring} ophyd_async.testing._assert.partial_reading
-```
-````
-
-````{py:function} get_mock(device: ~ophyd_async.core.Device | ~ophyd_async.core.Signal) -> ~unittest.mock.Mock
-:canonical: ophyd_async.testing._mock_signal_utils.get_mock
-
-```{autodoc2-docstring} ophyd_async.testing._mock_signal_utils.get_mock
-```
-````
-
-````{py:function} set_mock_value(signal: ~ophyd_async.core.Signal[~ophyd_async.core.SignalDatatypeT], value: ~ophyd_async.core.SignalDatatypeT)
-:canonical: ophyd_async.testing._mock_signal_utils.set_mock_value
-
-```{autodoc2-docstring} ophyd_async.testing._mock_signal_utils.set_mock_value
-```
-````
-
-````{py:function} set_mock_values(signal: ~ophyd_async.core.SignalR[~ophyd_async.core.SignalDatatypeT], values: ~collections.abc.Iterable[~ophyd_async.core.SignalDatatypeT], require_all_consumed: bool = False) -> ~collections.abc.Iterator[~ophyd_async.core.SignalDatatypeT]
-:canonical: ophyd_async.testing._mock_signal_utils.set_mock_values
-
-```{autodoc2-docstring} ophyd_async.testing._mock_signal_utils.set_mock_values
-```
-````
-
-````{py:function} get_mock_put(signal: ~ophyd_async.core.Signal) -> ~unittest.mock.AsyncMock
-:canonical: ophyd_async.testing._mock_signal_utils.get_mock_put
-
-```{autodoc2-docstring} ophyd_async.testing._mock_signal_utils.get_mock_put
-```
-````
-
-````{py:function} callback_on_mock_put(signal: ~ophyd_async.core.Signal[~ophyd_async.core.SignalDatatypeT], callback: ~collections.abc.Callable[[~ophyd_async.core.SignalDatatypeT, bool], None] | ~collections.abc.Callable[[~ophyd_async.core.SignalDatatypeT, bool], ~collections.abc.Awaitable[None]])
-:canonical: ophyd_async.testing._mock_signal_utils.callback_on_mock_put
-
-```{autodoc2-docstring} ophyd_async.testing._mock_signal_utils.callback_on_mock_put
-```
-````
-
-````{py:function} mock_puts_blocked(*signals: ~ophyd_async.core.Signal)
-:canonical: ophyd_async.testing._mock_signal_utils.mock_puts_blocked
-
-```{autodoc2-docstring} ophyd_async.testing._mock_signal_utils.mock_puts_blocked
-```
-````
-
-````{py:function} set_mock_put_proceeds(signal: ~ophyd_async.core.Signal, proceeds: bool)
-:canonical: ophyd_async.testing._mock_signal_utils.set_mock_put_proceeds
-
-```{autodoc2-docstring} ophyd_async.testing._mock_signal_utils.set_mock_put_proceeds
 ```
 ````
 
@@ -246,6 +193,44 @@
 :async:
 
 ```{autodoc2-docstring} ophyd_async.testing._wait_for_pending.wait_for_pending_wakeups
+```
+````
+
+`````{py:class} ManagedSubprocess(subprocess_args: ~collections.abc.Sequence[str], ready_marker: str, *, startup_timeout: float = 15.0, stop_input: str | None = None, shutdown_timeout: float = 10.0)
+:canonical: ophyd_async.testing._subprocess.ManagedSubprocess
+
+```{autodoc2-docstring} ophyd_async.testing._subprocess.ManagedSubprocess
+```
+
+````{py:method} start() -> None
+:canonical: ophyd_async.testing._subprocess.ManagedSubprocess.start
+
+```{autodoc2-docstring} ophyd_async.testing._subprocess.ManagedSubprocess.start
+```
+
+````
+
+````{py:method} stop() -> None
+:canonical: ophyd_async.testing._subprocess.ManagedSubprocess.stop
+
+```{autodoc2-docstring} ophyd_async.testing._subprocess.ManagedSubprocess.stop
+```
+
+````
+
+`````
+
+````{py:function} find_free_port() -> int
+:canonical: ophyd_async.testing._subprocess.find_free_port
+
+```{autodoc2-docstring} ophyd_async.testing._subprocess.find_free_port
+```
+````
+
+````{py:function} start_subprocess(subprocess_args: ~collections.abc.Sequence[str], ready_marker: str, *, startup_timeout: float = 15.0, stop_input: str | None = None, shutdown_timeout: float = 10.0) -> ~ophyd_async.testing._subprocess.ManagedSubprocess
+:canonical: ophyd_async.testing._subprocess.start_subprocess
+
+```{autodoc2-docstring} ophyd_async.testing._subprocess.start_subprocess
 ```
 ````
 
@@ -283,6 +268,86 @@ Bases: {py:obj}`ophyd_async.core.StrictEnum`
    'Ccc'
 
 ```{autodoc2-docstring} ophyd_async.testing._one_of_everything.ExampleEnum.C
+```
+
+````
+
+`````
+
+`````{py:class} ExampleSubsetEnum()
+:canonical: ophyd_async.testing._one_of_everything.ExampleSubsetEnum
+
+Bases: {py:obj}`ophyd_async.core.SubsetEnum`
+
+```{autodoc2-docstring} ophyd_async.testing._one_of_everything.ExampleSubsetEnum
+```
+
+````{py:attribute} A
+:canonical: ophyd_async.testing._one_of_everything.ExampleSubsetEnum.A
+:value: >
+   'Aaa'
+
+```{autodoc2-docstring} ophyd_async.testing._one_of_everything.ExampleSubsetEnum.A
+```
+
+````
+
+````{py:attribute} B
+:canonical: ophyd_async.testing._one_of_everything.ExampleSubsetEnum.B
+:value: >
+   'Bbb'
+
+```{autodoc2-docstring} ophyd_async.testing._one_of_everything.ExampleSubsetEnum.B
+```
+
+````
+
+`````
+
+`````{py:class} ExampleSupersetEnum()
+:canonical: ophyd_async.testing._one_of_everything.ExampleSupersetEnum
+
+Bases: {py:obj}`ophyd_async.core.SupersetEnum`
+
+```{autodoc2-docstring} ophyd_async.testing._one_of_everything.ExampleSupersetEnum
+```
+
+````{py:attribute} A
+:canonical: ophyd_async.testing._one_of_everything.ExampleSupersetEnum.A
+:value: >
+   'Aaa'
+
+```{autodoc2-docstring} ophyd_async.testing._one_of_everything.ExampleSupersetEnum.A
+```
+
+````
+
+````{py:attribute} B
+:canonical: ophyd_async.testing._one_of_everything.ExampleSupersetEnum.B
+:value: >
+   'Bbb'
+
+```{autodoc2-docstring} ophyd_async.testing._one_of_everything.ExampleSupersetEnum.B
+```
+
+````
+
+````{py:attribute} C
+:canonical: ophyd_async.testing._one_of_everything.ExampleSupersetEnum.C
+:value: >
+   'Ccc'
+
+```{autodoc2-docstring} ophyd_async.testing._one_of_everything.ExampleSupersetEnum.C
+```
+
+````
+
+````{py:attribute} D
+:canonical: ophyd_async.testing._one_of_everything.ExampleSupersetEnum.D
+:value: >
+   'Ddd'
+
+```{autodoc2-docstring} ophyd_async.testing._one_of_everything.ExampleSupersetEnum.D
 ```
 
 ````
@@ -520,4 +585,11 @@ Bases: {py:obj}`ophyd_async.core.Device`
 ```{autodoc2-docstring} ophyd_async.testing._single_derived.ReadOnlyBeamstop
 ```
 
+````
+
+````{py:function} assert_has_calls(device: ~ophyd_async.core.Device | ~ophyd_async.core.Signal, calls: ~collections.abc.Sequence[~typing.Any], reset_after=True)
+:canonical: ophyd_async.testing._assert.assert_has_calls
+
+```{autodoc2-docstring} ophyd_async.testing._assert.assert_has_calls
+```
 ````

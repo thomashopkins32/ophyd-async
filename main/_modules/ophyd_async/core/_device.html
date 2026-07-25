@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ophyd_async.core._device &#8212; ophyd-async 0.1.dev795+g864c2c2 documentation</title>
+    <title>ophyd_async.core._device &#8212; ophyd-async 0.1.dev1000+g9c3836ec5 documentation</title>
   
   
   
@@ -26,8 +26,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -36,53 +36,488 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=3fefa004" />
   
   <!-- So that users can add custom icons -->
-  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
-    <script src="../../../_static/documentation_options.js?v=eb24e141"></script>
-    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/documentation_options.js?v=93ed66f4"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=30646c52"></script>
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
-    <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
-    <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
-    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
     <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
-    <script type="module">
-import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
-window.addEventListener("load", () => mermaid.run());
-</script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
+
+
+
+const initStyles = () => {
+    const defaultStyle = document.createElement('style');
+    defaultStyle.textContent = `pre.mermaid {
+    /* Same as .mermaid-container > pre */
+    display: block;
+    width: 100%;
+}
+
+pre.mermaid > svg {
+    /* Same as .mermaid-container > pre > svg */
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}`;
+    document.head.appendChild(defaultStyle);
+
+    const fullscreenStyle = document.createElement('style');
+    fullscreenStyle.textContent = `.mermaid-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.mermaid-container > pre {
+    display: block;
+    width: 100%;
+}
+
+.mermaid-container > pre > svg {
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}
+
+.mermaid-fullscreen-btn {
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    line-height: 1;
+    padding: 0;
+    color: #333;
+}
+
+.mermaid-fullscreen-btn:hover {
+    opacity: 100% !important;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-btn.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-btn.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal {
+    display: none;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 95vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.98);
+    z-index: 9999;
+    padding: 20px;
+    overflow: auto;
+}
+
+.mermaid-fullscreen-modal.dark-theme {
+    background: rgba(0, 0, 0, 0.98);
+}
+
+.mermaid-fullscreen-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen {
+    position: relative;
+    width: 95vw;
+    height: 90vh;
+    max-width: 95vw;
+    max-height: 90vh;
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen.dark-theme {
+    background: #1a1a1a;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+}
+
+.mermaid-container-fullscreen pre.mermaid {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen .mermaid svg {
+    height: 100% !important;
+    width: 100% !important;
+    cursor: grab;
+}
+
+.mermaid-fullscreen-close {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s;
+    font-size: 24px;
+    line-height: 1;
+    color: #333;
+}
+
+.mermaid-fullscreen-close:hover {
+    background: white;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-close.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-close.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal .mermaid-fullscreen-btn {
+    display: none !important;
+}`;
+    document.head.appendChild(fullscreenStyle);
+}
+
+// Detect if page has dark background
+const isDarkTheme = () => {
+    // We use a set of heuristics:
+    // 1. Check for common dark mode classes or attributes
+    // 2. Check computed background color brightness
+    if (document.documentElement.classList.contains('dark') ||
+        document.documentElement.getAttribute('data-theme') === 'dark' ||
+        document.body.classList.contains('dark') ||
+        document.body.getAttribute('data-theme') === 'dark') {
+        // console.log("Dark theme detected via class/attribute");
+        return true;
+    }
+    if (document.documentElement.classList.contains('light') ||
+        document.documentElement.getAttribute('data-theme') === 'light' ||
+        document.body.classList.contains('light') ||
+        document.body.getAttribute('data-theme') === 'light') {
+        // console.log("Light theme detected via class/attribute");
+        return false;
+    }
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        // console.log("Dark theme detected via prefers-color-scheme");
+        return true;
+    }
+    const bgColor = window.getComputedStyle(document.body).backgroundColor;
+    const match = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        // console.log("Background color brightness:", brightness);
+        return brightness < 128;
+    }
+    // console.log("No dark or light theme detected, defaulting to light theme");
+    return false;
+};
+
+let darkTheme = isDarkTheme();
+let modal = null;
+let modalContent = null;
+let previousScrollOffset = [window.scrollX, window.scrollY];
+
+const runMermaid = async (rerun) => {
+    console.log("Running mermaid diagrams, rerun =", rerun);
+    // clear all existing mermaid charts
+    let all_mermaids = document.querySelectorAll(".mermaid");
+
+    if (rerun) {
+        all_mermaids.forEach((el) => {
+            if(!el.hasAttribute("data-original-code")) {
+                // store original code
+                // console.log(`Storing original code for first run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+            if(el.getAttribute("data-processed") === "true") {
+                // remove and restore original
+                el.removeAttribute("data-processed");
+                // console.log(`Restoring original code for re-run: `, el.getAttribute('data-original-code'));
+                el.innerHTML = el.getAttribute('data-original-code');
+            } else {
+                // store original code
+                // console.log(`Storing original code for re-run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+        });
+        await mermaid.run();
+    }
+
+    all_mermaids = document.querySelectorAll(".mermaid");
+    const mermaids_processed = document.querySelectorAll(".mermaid[data-processed='true']");
+
+    if ("False" === "True") {
+        const mermaids_to_add_zoom = -1 === -1 ? all_mermaids.length : -1;
+        if(mermaids_to_add_zoom > 0) {
+            var svgs = d3.selectAll("");
+            if(all_mermaids.length !== mermaids_processed.length) {
+                setTimeout(() => runMermaid(false), 200);
+                return;
+            } else if(svgs.size() !== mermaids_to_add_zoom) {
+                setTimeout(() => runMermaid(false), 200);
+                return;
+            } else {
+                svgs.each(function() {
+                    var svg = d3.select(this);
+                    svg.html("<g class='wrapper'>" + svg.html() + "</g>");
+                    var inner = svg.select("g");
+                    var zoom = d3.zoom().on("zoom", function(event) {
+                        inner.attr("transform", event.transform);
+                    });
+                    svg.call(zoom);
+                });
+            }
+        }
+    } else if(all_mermaids.length !== mermaids_processed.length) {
+        // Wait for mermaid to process all diagrams
+        setTimeout(() => runMermaid(false), 200);
+        return;
+    }
+
+    // Stop here if not adding fullscreen capability
+    if ("True" !== "True") return;
+
+    if (modal !== null ) {
+        // Destroy existing modal
+        modal.remove();
+        modal = null;
+        modalContent = null;
+    }
+
+    modal = document.createElement('div');
+    modal.className = 'mermaid-fullscreen-modal' + (darkTheme ? ' dark-theme' : '');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Fullscreen diagram viewer');
+    modal.innerHTML = `
+        <button class="mermaid-fullscreen-close${darkTheme ? ' dark-theme' : ''}" aria-label="Close fullscreen">✕</button>
+        <div class="mermaid-container-fullscreen${darkTheme ? ' dark-theme' : ''}"></div>
+    `;
+    document.body.appendChild(modal);
+
+    modalContent = modal.querySelector('.mermaid-container-fullscreen');
+    const closeBtn = modal.querySelector('.mermaid-fullscreen-close');
+
+    const closeModal = () => {
+        modal.classList.remove('active');
+        modalContent.innerHTML = '';
+        document.body.style.overflow = ''
+        window.scrollTo({left: previousScrollOffset[0], top: previousScrollOffset[1], behavior: 'instant'});
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    document.querySelectorAll('.mermaid').forEach((mermaidDiv) => {
+        if (mermaidDiv.parentNode.classList.contains('mermaid-container') ||
+            mermaidDiv.closest('.mermaid-fullscreen-modal')) {
+            // Already processed, adjust button class if needed
+            const existingBtn = mermaidDiv.parentNode.querySelector('.mermaid-fullscreen-btn');
+            if (existingBtn) {
+                existingBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+            }
+            return;
+        }
+
+        const container = document.createElement('div');
+        container.className = 'mermaid-container';
+        mermaidDiv.parentNode.insertBefore(container, mermaidDiv);
+        container.appendChild(mermaidDiv);
+
+        const fullscreenBtn = document.createElement('button');
+        fullscreenBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+        fullscreenBtn.setAttribute('aria-label', 'View diagram in fullscreen');
+        fullscreenBtn.textContent = '⛶';
+        fullscreenBtn.style.opacity = '50%';
+
+        // Calculate dynamic position based on diagram's margin and padding
+        const diagramStyle = window.getComputedStyle(mermaidDiv);
+        const marginTop = parseFloat(diagramStyle.marginTop) || 0;
+        const marginRight = parseFloat(diagramStyle.marginRight) || 0;
+        const paddingTop = parseFloat(diagramStyle.paddingTop) || 0;
+        const paddingRight = parseFloat(diagramStyle.paddingRight) || 0;
+        fullscreenBtn.style.top = `${marginTop + paddingTop + 4}px`;
+        fullscreenBtn.style.right = `${marginRight + paddingRight + 4}px`;
+
+        fullscreenBtn.addEventListener('click', () => {
+            previousScrollOffset = [window.scroll, window.scrollY];
+            const clone = mermaidDiv.cloneNode(true);
+            modalContent.innerHTML = '';
+            modalContent.appendChild(clone);
+
+            const svg = clone.querySelector('svg');
+            if (svg) {
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+                svg.style.width = '100%';
+                svg.style.height = 'auto';
+                svg.style.maxWidth = '100%';
+                svg.style.sdisplay = 'block';
+
+                if ("False" === "True") {
+                    setTimeout(() => {
+                        const g = svg.querySelector('g');
+                        if (g) {
+                            var svgD3 = d3.select(svg);
+                            svgD3.html("<g class='wrapper'>" + svgD3.html() + "</g>");
+                            var inner = svgD3.select("g");
+                            var zoom = d3.zoom().on("zoom", function(event) {
+                                inner.attr("transform", event.transform);
+                            });
+                            svgD3.call(zoom);
+                        }
+                    }, 100);
+                }
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        container.appendChild(fullscreenBtn);
+    });
+};
+
+const load = async () => {
+    initStyles();
+
+    await runMermaid(true);
+
+    const reRunIfThemeChanges = async () => {
+        const newDarkTheme = isDarkTheme();
+        if (newDarkTheme !== darkTheme) {
+            darkTheme = newDarkTheme;
+            console.log("Theme change detected, re-running mermaid with", darkTheme ? "dark" : "default", "theme");
+            await mermaid.initialize(
+                {...JSON.parse(
+                    `{"startOnLoad": false}`
+                ),
+                ...{ darkMode: darkTheme, theme: darkTheme ? 'dark' : 'default' },
+                }
+            );
+            await runMermaid(true);
+        }
+    };
+
+    // Update theme classes when theme changes
+    const themeObserver = new MutationObserver(reRunIfThemeChanges);
+    themeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+    themeObserver.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+};
+
+
+
+
+
+console.log("Initializing mermaid with", darkTheme ? "dark" : "default", "theme");
+mermaid.initialize(
+    {...JSON.parse(
+        `{"startOnLoad": false}`
+    ),
+    ...{ darkMode: darkTheme, theme: darkTheme ? 'dark' : 'default' },
+    }
+);
+
+window.addEventListener("load", load);
+window.runMermaid = runMermaid;</script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/ophyd_async/core/_device';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_version = '0.17.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://blueskyproject.io/ophyd-async/switcher.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'main';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="icon" href="../../../_static/ophyd-favicon.svg"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="main" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
+  
+  
+  
   
   <dialog id="pst-search-dialog">
     
@@ -108,7 +543,7 @@ window.addEventListener("load", () => mermaid.run());
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
   <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
@@ -134,8 +569,8 @@ window.addEventListener("load", () => mermaid.run());
       
     
     
-    <img src="../../../_static/ophyd-async-logo.svg" class="logo__image only-light" alt="ophyd-async 0.1.dev795+g864c2c2 documentation - Home"/>
-    <img src="../../../_static/ophyd-async-logo.svg" class="logo__image only-dark pst-js-only" alt="ophyd-async 0.1.dev795+g864c2c2 documentation - Home"/>
+    <img src="../../../_static/ophyd-async-logo.svg" class="logo__image only-light" alt="ophyd-async 0.1.dev1000+g9c3836ec5 documentation - Home"/>
+    <img src="../../../_static/ophyd-async-logo.svg" class="logo__image only-dark pst-js-only" alt="ophyd-async 0.1.dev1000+g9c3836ec5 documentation - Home"/>
   
   
 </a></div>
@@ -466,22 +901,118 @@ window.addEventListener("load", () => mermaid.run());
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Awaitable</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">MutableMapping</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">cached_property</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoggerAdapter</span><span class="p">,</span> <span class="n">getLogger</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">TypeVar</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Generic</span><span class="p">,</span> <span class="n">TypeVar</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">unittest.mock</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mock</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">bluesky.protocols</span><span class="w"> </span><span class="kn">import</span> <span class="n">HasName</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">bluesky.run_engine</span><span class="w"> </span><span class="kn">import</span> <span class="n">call_in_bluesky_event_loop</span><span class="p">,</span> <span class="n">in_bluesky_event_loop</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">._utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">DEFAULT_TIMEOUT</span><span class="p">,</span>
-    <span class="n">LazyMock</span><span class="p">,</span>
-    <span class="n">NotConnected</span><span class="p">,</span>
+    <span class="n">NotConnectedError</span><span class="p">,</span>
     <span class="n">error_if_none</span><span class="p">,</span>
     <span class="n">wait_for_connection</span><span class="p">,</span>
 <span class="p">)</span>
+
+<span class="n">DeviceT</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;DeviceT&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="s2">&quot;Device&quot;</span><span class="p">)</span>
+
+<span class="n">DEVICE_RESERVED_ATTRS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;collect_asset_docs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_index&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;read_configuration&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;describe_configuration&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;trigger&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;prepare&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;read&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;describe&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;describe_collect&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;collect&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;collect_pages&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;set&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;locate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;kickoff&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;complete&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;stage&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;unstage&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pause&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;resume&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;stop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;subscribe&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;clear_sub&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;check_value&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;hints&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_reserved_attrs_allowed</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="c1"># Opt-out for the reserved-name check, mainly so downstream test suites that</span>
+    <span class="c1"># mock protocol methods (e.g. `device.set = AsyncMock()`) can be flipped back</span>
+    <span class="c1"># on without editing every call site. Read from the environment each time so a</span>
+    <span class="c1"># test can toggle it; only reached when a reserved name is actually set, so it</span>
+    <span class="c1"># never touches the hot path. Prefer set_mock_attr() for a single override.</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;OPHYD_ASYNC_ALLOW_RESERVED_ATTRS&quot;</span><span class="p">,</span> <span class="s2">&quot;NO&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;YES&quot;</span>
+
+
+<div class="viewcode-block" id="DeviceMock">
+<a class="viewcode-back" href="../../../_api/ophyd_async/ophyd_async.core.html#ophyd_async.core.DeviceMock">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DeviceMock</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">DeviceT</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A lazily created Mock to be used when connecting in mock mode.</span>
+
+<span class="sd">    Creating Mocks is reasonably expensive when each Device (and Signal)</span>
+<span class="sd">    requires its own, and the tree is only used when ``Signal.set()`` is</span>
+<span class="sd">    called. This class allows a tree of lazily connected Mocks to be</span>
+<span class="sd">    constructed so that when the leaf is created, so are its parents.</span>
+<span class="sd">    Any calls to the child are then accessible from the parent mock.</span>
+
+<span class="sd">    Subclasses can override the `connect()` method to inject custom logic</span>
+<span class="sd">    when mock devices are connected.</span>
+
+<span class="sd">    ```python</span>
+<span class="sd">    &gt;&gt;&gt; parent = DeviceMock()</span>
+<span class="sd">    &gt;&gt;&gt; child = DeviceMock(&quot;child&quot;, parent)</span>
+<span class="sd">    &gt;&gt;&gt; child_mock = child()</span>
+<span class="sd">    &gt;&gt;&gt; child_mock()  # doctest: +ELLIPSIS</span>
+<span class="sd">    &lt;Mock name=&#39;mock.child()&#39; id=&#39;...&#39;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; parent_mock = parent()</span>
+<span class="sd">    &gt;&gt;&gt; parent_mock.mock_calls</span>
+<span class="sd">    [call.child()]</span>
+
+<span class="sd">    ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="n">DeviceMock</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mock</span><span class="p">:</span> <span class="n">Mock</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mock</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mock</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mock</span> <span class="o">=</span> <span class="n">Mock</span><span class="p">(</span><span class="n">spec</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span><span class="o">.</span><span class="n">attach_mock</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mock</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mock</span>
+
+<div class="viewcode-block" id="DeviceMock.connect">
+<a class="viewcode-back" href="../../../_api/ophyd_async/ophyd_async.core.html#ophyd_async.core.DeviceMock.connect">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">DeviceT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Will be called when the device is connected in mock mode.</span>
+
+<span class="sd">        This allows mock values to be set and callbacks to be added</span>
+<span class="sd">        to the mock device so it behaves more like the real device.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+</div>
+
+
+
+<span class="c1"># Keep LazyMock as an alias for backwards compatibility</span>
+<span class="c1"># Remove for ophyd-async 1.0</span>
+<span class="n">LazyMock</span> <span class="o">=</span> <span class="n">DeviceMock</span>
 
 
 <div class="viewcode-block" id="DeviceConnector">
@@ -512,7 +1043,7 @@ window.addEventListener("load", () => mermaid.run());
 
 <div class="viewcode-block" id="DeviceConnector.connect_mock">
 <a class="viewcode-back" href="../../../_api/ophyd_async/ophyd_async.core.html#ophyd_async.core.DeviceConnector.connect_mock">[docs]</a>
-    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">connect_mock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">Device</span><span class="p">,</span> <span class="n">mock</span><span class="p">:</span> <span class="n">LazyMock</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">connect_mock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">Device</span><span class="p">,</span> <span class="n">mock</span><span class="p">:</span> <span class="n">DeviceMock</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Use during [](#Device.connect) with `mock=True`.</span>
 
 <span class="sd">        This is called when there is no cached connect done in `mock=True`</span>
@@ -522,11 +1053,15 @@ window.addEventListener("load", () => mermaid.run());
         <span class="n">exceptions</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">child_device</span> <span class="ow">in</span> <span class="n">device</span><span class="o">.</span><span class="n">children</span><span class="p">():</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="k">await</span> <span class="n">child_device</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">mock</span><span class="o">=</span><span class="n">mock</span><span class="o">.</span><span class="n">child</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
-            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="n">exceptions</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">e</span>
+                <span class="n">child_mock_class</span> <span class="o">=</span> <span class="n">child_device</span><span class="o">.</span><span class="n">_mock_class</span>  <span class="c1"># noqa: SLF001</span>
+                <span class="k">await</span> <span class="n">child_device</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">mock</span><span class="o">=</span><span class="n">child_mock_class</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">mock</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="n">exceptions</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">exc</span>
         <span class="k">if</span> <span class="n">exceptions</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">NotConnected</span><span class="o">.</span><span class="n">with_other_exceptions_logged</span><span class="p">(</span><span class="n">exceptions</span><span class="p">)</span></div>
+            <span class="k">raise</span> <span class="n">NotConnectedError</span><span class="o">.</span><span class="n">with_other_exceptions_logged</span><span class="p">(</span><span class="n">exceptions</span><span class="p">)</span>
+
+        <span class="c1"># Call the DeviceMock&#39;s connect method to inject custom logic</span>
+        <span class="k">await</span> <span class="n">mock</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">device</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="DeviceConnector.connect_real">
@@ -537,7 +1072,7 @@ window.addEventListener("load", () => mermaid.run());
 <span class="sd">        This is called when there is no cached connect done in `mock=False`</span>
 <span class="sd">        mode. It connects the Device and all its children in real mode in parallel.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Connect in parallel, gathering up NotConnected errors</span>
+        <span class="c1"># Connect in parallel, gathering up NotConnectedErrors</span>
         <span class="n">coros</span> <span class="o">=</span> <span class="p">{</span>
             <span class="n">name</span><span class="p">:</span> <span class="n">child_device</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">force_reconnect</span><span class="o">=</span><span class="n">force_reconnect</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">child_device</span> <span class="ow">in</span> <span class="n">device</span><span class="o">.</span><span class="n">children</span><span class="p">()</span>
@@ -545,6 +1080,29 @@ window.addEventListener("load", () => mermaid.run());
         <span class="k">await</span> <span class="n">wait_for_connection</span><span class="p">(</span><span class="o">**</span><span class="n">coros</span><span class="p">)</span></div>
 </div>
 
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_fail_if_overwriting_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">Device</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Cannot set the parent of </span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2"> to be </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">: &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;it is already a child of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+    <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_device_child</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">Device</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Device</span> <span class="o">|</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Remove optional devices that have resolved to None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_child_devices</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">value</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_child_devices</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="c1"># And if the name is set, then set the name of all children,</span>
+        <span class="c1"># including the child</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)</span>
+    <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Device">
@@ -561,10 +1119,26 @@ window.addEventListener("load", () => mermaid.run());
     <span class="n">_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="c1"># None if connect hasn&#39;t started, a Task if it has</span>
     <span class="n">_connect_task</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Task</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1"># The mock class to be used if we connect in mock mode</span>
+    <span class="n">_mock_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">DeviceMock</span><span class="p">]</span> <span class="o">=</span> <span class="n">DeviceMock</span>
     <span class="c1"># The mock if we have connected in mock mode</span>
-    <span class="n">_mock</span><span class="p">:</span> <span class="n">LazyMock</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_mock</span><span class="p">:</span> <span class="n">DeviceMock</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="c1"># The separator to use when making child names</span>
     <span class="n">_child_name_separator</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span>
+    <span class="c1"># Methods to call on setattr</span>
+    <span class="n">_setattr_methods</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Device</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="kc">None</span><span class="p">]]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
+        <span class="c1"># These are guaranteed not to be devices, so don&#39;t check them</span>
+        <span class="n">setattr_methods</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">_not_device_attrs</span><span class="p">,</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">)</span> <span class="o">|</span> <span class="p">{</span>
+            <span class="c1"># parent needs special handling</span>
+            <span class="s2">&quot;parent&quot;</span><span class="p">:</span> <span class="n">_fail_if_overwriting_parent</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="c1"># Assign _setattr_methods in __new__ instead of __init__,</span>
+        <span class="c1"># as this is called before any __setattr__ calls are made</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_setattr_methods&quot;</span><span class="p">,</span> <span class="n">setattr_methods</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">connector</span><span class="p">:</span> <span class="n">DeviceConnector</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
@@ -627,30 +1201,33 @@ window.addEventListener("load", () => mermaid.run());
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># Bear in mind that this function is called *a lot*, so</span>
-        <span class="c1"># we need to make sure nothing expensive happens in it...</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;parent&quot;</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Cannot set the parent of </span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2"> to be </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">: &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;it is already a child of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="c1"># we need to make sure nothing expensive happens in it, hence the</span>
+        <span class="c1"># dictionary of setattr functions</span>
+        <span class="n">func</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setattr_methods</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">DEVICE_RESERVED_ATTRS</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">_reserved_attrs_allowed</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;`</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">` is used in one of the bluesky protocols. &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Please use `</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_` instead. To override this attribute in a &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;test (e.g. with a mock) use ophyd_async.testing.set_mock_attr, &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;or set OPHYD_ASYNC_ALLOW_RESERVED_ATTRS=YES to disable this &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;check entirely.&quot;</span>
                 <span class="p">)</span>
-        <span class="c1"># ...hence not doing an isinstance check for attributes we</span>
-        <span class="c1"># know not to be Devices</span>
-        <span class="k">elif</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_not_device_attrs</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Device</span><span class="p">):</span>
-            <span class="n">value</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_child_devices</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-            <span class="c1"># And if the name is set, then set the name of all children,</span>
-            <span class="c1"># including the child</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)</span>
-        <span class="c1"># ...and avoiding the super call as we know it resolves to `object`</span>
-        <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="c1"># First encounter, so assign correct</span>
+            <span class="c1"># __setattr__ method depending on `value` type</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Device</span><span class="p">):</span>
+                <span class="n">func</span> <span class="o">=</span> <span class="n">_set_device_child</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">func</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_setattr_methods</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span>
+        <span class="c1"># Dispatch the correct __setattr__ method</span>
+        <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Device.connect">
 <a class="viewcode-back" href="../../../_api/ophyd_async/ophyd_async.core.html#ophyd_async.core.Device.connect">[docs]</a>
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">connect</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">mock</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="n">LazyMock</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">mock</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="n">DeviceMock</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">DEFAULT_TIMEOUT</span><span class="p">,</span>
         <span class="n">force_reconnect</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -662,25 +1239,26 @@ window.addEventListener("load", () => mermaid.run());
 
 <span class="sd">        :param mock:</span>
 <span class="sd">            If True then use [](#MockSignalBackend) for all Signals. If passed a</span>
-<span class="sd">            [](#LazyMock) then pass this down for use within the Signals,</span>
-<span class="sd">            otherwise create one.</span>
+<span class="sd">            [](#DeviceMock) then pass this down for use within the Signals,</span>
+<span class="sd">            otherwise create one using the registered default mock for this device</span>
+<span class="sd">            type, or a plain [](#DeviceMock) if no default is registered.</span>
 <span class="sd">        :param timeout: Time to wait before failing with a TimeoutError.</span>
 <span class="sd">        :param force_reconnect:</span>
 <span class="sd">            If True, force a reconnect even if the last connect succeeded.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">connector</span> <span class="o">=</span> <span class="n">error_if_none</span><span class="p">(</span>
+        <span class="n">connector</span><span class="p">:</span> <span class="n">DeviceConnector</span> <span class="o">=</span> <span class="n">error_if_none</span><span class="p">(</span>
             <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_connector&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2">: doesn&#39;t have attribute `_connector`,&quot;</span>
             <span class="sa">f</span><span class="s2">&quot; did you call `super().__init__` in your `__init__` method?&quot;</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">mock</span><span class="p">:</span>
             <span class="c1"># Always connect in mock mode serially</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="n">LazyMock</span><span class="p">):</span>
-                <span class="c1"># Use the provided mock</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="n">DeviceMock</span><span class="p">):</span>
+                <span class="c1"># Use the user supplied mock</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_mock</span> <span class="o">=</span> <span class="n">mock</span>
             <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mock</span><span class="p">:</span>
-                <span class="c1"># Make one</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_mock</span> <span class="o">=</span> <span class="n">LazyMock</span><span class="p">()</span>
+                <span class="c1"># Make a new mock of the registered type</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_mock</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mock_class</span><span class="p">()</span>
             <span class="k">await</span> <span class="n">connector</span><span class="o">.</span><span class="n">connect_mock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mock</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Try to cache the connect in real mode</span>
@@ -709,10 +1287,9 @@ window.addEventListener("load", () => mermaid.run());
     <span class="s2">&quot;_timeout&quot;</span><span class="p">,</span>
     <span class="s2">&quot;_mock&quot;</span><span class="p">,</span>
     <span class="s2">&quot;_connect_task&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;_child_name_separator&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;_attempts&quot;</span><span class="p">,</span>
 <span class="p">}</span>
-
-
-<span class="n">DeviceT</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;DeviceT&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">Device</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="DeviceVector">
@@ -725,20 +1302,13 @@ window.addEventListener("load", () => mermaid.run());
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">children</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">DeviceT</span><span class="p">],</span>
+        <span class="n">children</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">DeviceT</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">connector</span><span class="p">:</span> <span class="n">DeviceConnector</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">DeviceT</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">children</span><span class="p">)</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">child</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="s2">&quot;parent&quot;</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">Device</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
-                <span class="s2">&quot;DeviceVector can only have integer named children, &quot;</span>
-                <span class="s2">&quot;set via device_vector[i] = child&quot;</span>
-            <span class="p">)</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">child</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">children</span> <span class="ow">or</span> <span class="p">{})</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">connector</span><span class="o">=</span><span class="n">connector</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeviceT</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
@@ -768,7 +1338,8 @@ window.addEventListener("load", () => mermaid.run());
 <a class="viewcode-back" href="../../../_api/ophyd_async/ophyd_async.core.html#ophyd_async.core.DeviceVector.children">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">children</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Device</span><span class="p">]]:</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">yield</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">child</span></div>
+            <span class="k">yield</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">child</span>
+        <span class="k">yield from</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">children</span><span class="p">()</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># to allow DeviceVector to be used as dict keys and in sets</span>
@@ -776,6 +1347,76 @@ window.addEventListener("load", () => mermaid.run());
 
 
 
+<div class="viewcode-block" id="DeviceMap">
+<a class="viewcode-back" href="../../../_api/ophyd_async/ophyd_async.core.html#ophyd_async.core.DeviceMap">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DeviceMap</span><span class="p">(</span><span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DeviceT</span><span class="p">],</span> <span class="n">Device</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines a dictionary of Device children with arbitrary string keys.</span>
+
+<span class="sd">    Like [](#DeviceVector) but indexed by `str` rather than `int`, for when</span>
+<span class="sd">    sub-devices are more naturally addressed by name than by number.</span>
+
+<span class="sd">    :see-also: [](#implementing-devices) for examples of how to use this class.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">children</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DeviceT</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">connector</span><span class="p">:</span> <span class="n">DeviceConnector</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DeviceT</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">children</span> <span class="ow">or</span> <span class="p">{})</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">connector</span><span class="o">=</span><span class="n">connector</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeviceT</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">DeviceT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Check the types on entry to dict to make sure we can&#39;t accidentally</span>
+        <span class="c1"># make a non-string named child</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Expected str, got </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Device</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Expected Device, got </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="n">value</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">child</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Child Devices must be set via `device_map[key] = child` so they get a</span>
+        <span class="c1"># string key; setting them as attributes would give them no key.</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="s2">&quot;parent&quot;</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">Device</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
+                <span class="s2">&quot;DeviceMap can only have string named children, &quot;</span>
+                <span class="s2">&quot;set via device_map[key] = child&quot;</span>
+            <span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">child</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">_children</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DeviceMap.children">
+<a class="viewcode-back" href="../../../_api/ophyd_async/ophyd_async.core.html#ophyd_async.core.DeviceMap.children">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">children</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Device</span><span class="p">]]:</span>
+        <span class="c1"># Keys are already str, so yield them directly (no str() needed)</span>
+        <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="k">yield from</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">children</span><span class="p">()</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># to allow DeviceMap to be used as dict keys and in sets</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="DeviceProcessor">
+<a class="viewcode-back" href="../../../_api/ophyd_async/ophyd_async.core.html#ophyd_async.core.DeviceProcessor">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DeviceProcessor</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Sync/Async Context Manager that finds all the Devices declared within it.</span>
 
@@ -829,12 +1470,12 @@ window.addEventListener("load", () => mermaid.run());
         <span class="bp">self</span><span class="o">.</span><span class="n">_locals_on_exit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_caller_locals</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">fut</span> <span class="o">=</span> <span class="n">call_in_bluesky_event_loop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_on_exit</span><span class="p">())</span>
-        <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">NotConnected</span><span class="p">(</span>
+        <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NotConnectedError</span><span class="p">(</span>
                 <span class="s2">&quot;Could not connect devices. Is the bluesky event loop running? See &quot;</span>
                 <span class="s2">&quot;https://blueskyproject.io/ophyd-async/main/&quot;</span>
                 <span class="s2">&quot;user/explanations/event-loop-choice.html for more info.&quot;</span>
-            <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+            <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
         <span class="k">return</span> <span class="n">fut</span>
 
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_on_exit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -845,7 +1486,8 @@ window.addEventListener("load", () => mermaid.run());
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Device</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_locals_on_enter</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">obj</span>
         <span class="p">}</span>
         <span class="c1"># Call the provided process function on them</span>
-        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_devices</span><span class="p">(</span><span class="n">devices</span><span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_devices</span><span class="p">(</span><span class="n">devices</span><span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="init_devices">
@@ -869,7 +1511,7 @@ window.addEventListener("load", () => mermaid.run());
 <span class="sd">    :param mock: If True, connect Signals in mock mode.</span>
 <span class="sd">    :param timeout: How long to wait for connect before logging an exception.</span>
 <span class="sd">    :raises RuntimeError: If used inside a plan, use [](#ensure_connected) instead.</span>
-<span class="sd">    :raises NotConnected: If devices could not be connected.</span>
+<span class="sd">    :raises NotConnectedError: If devices could not be connected.</span>
 
 <span class="sd">    For example, to connect and name 2 motors in parallel:</span>
 <span class="sd">    ```python</span>
@@ -893,6 +1535,29 @@ window.addEventListener("load", () => mermaid.run());
             <span class="k">await</span> <span class="n">wait_for_connection</span><span class="p">(</span><span class="o">**</span><span class="n">coros</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">DeviceProcessor</span><span class="p">(</span><span class="n">process_devices</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="default_mock_class">
+<a class="viewcode-back" href="../../../_api/ophyd_async/ophyd_async.core.html#ophyd_async.core.default_mock_class">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">default_mock_class</span><span class="p">(</span>
+    <span class="n">mock_cls</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">DeviceMock</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">type</span><span class="p">[</span><span class="n">DeviceT</span><span class="p">]],</span> <span class="nb">type</span><span class="p">[</span><span class="n">DeviceT</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Register a DeviceMock subclass as the default mock for a Device class.</span>
+
+<span class="sd">    This decorator allows automatic injection of mock logic when devices are</span>
+<span class="sd">    connected in mock mode. The decorated DeviceMock class should override</span>
+<span class="sd">    the `connect()` method to define custom mock behavior.</span>
+
+<span class="sd">    :param mock_cls: A DeviceMock subclass to register.</span>
+<span class="sd">    :returns: A decorator that registers the mock class for a Device subclass.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="n">device_cls</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">DeviceT</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">type</span><span class="p">[</span><span class="n">DeviceT</span><span class="p">]:</span>
+        <span class="n">device_cls</span><span class="o">.</span><span class="n">_mock_class</span> <span class="o">=</span> <span class="n">mock_cls</span>  <span class="c1"># noqa: SLF001</span>
+        <span class="k">return</span> <span class="n">device_cls</span>
+
+    <span class="k">return</span> <span class="n">wrapper</span></div>
 
 </pre></div>
 
@@ -923,8 +1588,8 @@ window.addEventListener("load", () => mermaid.run());
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -936,7 +1601,7 @@ window.addEventListener("load", () => mermaid.run());
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.17.1.
 </p></div>
       
     </div>

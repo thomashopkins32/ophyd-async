@@ -63,18 +63,18 @@
 
 ### API
 
-`````{py:class} SimMotor(name='', instant=True)
+`````{py:class} SimMotor(name: str = '', instant: bool = True, initial_value: float = 0.0, units: str = 'mm')
 :canonical: ophyd_async.sim._motor.SimMotor
 
-Bases: {py:obj}`ophyd_async.core.StandardReadable`, {py:obj}`bluesky.protocols.Stoppable`, {py:obj}`bluesky.protocols.Subscribable`\[{py:obj}`float`\], {py:obj}`bluesky.protocols.Locatable`\[{py:obj}`float`\]
+Bases: {py:obj}`ophyd_async.core.StandardReadable`, {py:obj}`ophyd_async.core.StandardMovable`\[{py:obj}`float`\]
 
 ```{autodoc2-docstring} ophyd_async.sim._motor.SimMotor
 ```
 
-````{py:method} set_name(name: str, *, child_name_separator: str | None = None) -> None
-:canonical: ophyd_async.sim._motor.SimMotor.set_name
+````{py:method} movable_logic()
+:canonical: ophyd_async.sim._motor.SimMotor.movable_logic
 
-```{autodoc2-docstring} ophyd_async.sim._motor.SimMotor.set_name
+```{autodoc2-docstring} ophyd_async.sim._motor.SimMotor.movable_logic
 ```
 
 ````
@@ -84,31 +84,6 @@ Bases: {py:obj}`ophyd_async.core.StandardReadable`, {py:obj}`bluesky.protocols.S
 :async:
 
 ```{autodoc2-docstring} ophyd_async.sim._motor.SimMotor.prepare
-```
-
-````
-
-````{py:method} locate() -> ~bluesky.protocols.Location[float]
-:canonical: ophyd_async.sim._motor.SimMotor.locate
-:async:
-
-```{autodoc2-docstring} ophyd_async.sim._motor.SimMotor.locate
-```
-
-````
-
-````{py:method} subscribe(function: ~ophyd_async.core.Callback[dict[str, ~bluesky.protocols.Reading[float]]]) -> None
-:canonical: ophyd_async.sim._motor.SimMotor.subscribe
-
-```{autodoc2-docstring} ophyd_async.sim._motor.SimMotor.subscribe
-```
-
-````
-
-````{py:method} clear_sub(function: ~ophyd_async.core.Callback[dict[str, ~bluesky.protocols.Reading[float]]]) -> None
-:canonical: ophyd_async.sim._motor.SimMotor.clear_sub
-
-```{autodoc2-docstring} ophyd_async.sim._motor.SimMotor.clear_sub
 ```
 
 ````
@@ -130,27 +105,9 @@ Bases: {py:obj}`ophyd_async.core.StandardReadable`, {py:obj}`bluesky.protocols.S
 
 ````
 
-````{py:method} set(value: float)
-:canonical: ophyd_async.sim._motor.SimMotor.set
-:async:
-
-```{autodoc2-docstring} ophyd_async.sim._motor.SimMotor.set
-```
-
-````
-
-````{py:method} stop(success=True)
-:canonical: ophyd_async.sim._motor.SimMotor.stop
-:async:
-
-```{autodoc2-docstring} ophyd_async.sim._motor.SimMotor.stop
-```
-
-````
-
 `````
 
-````{py:class} SimStage(pattern_generator: ~ophyd_async.sim._pattern_generator.PatternGenerator, name='')
+`````{py:class} SimStage(pattern_generator: ~ophyd_async.sim._pattern_generator.PatternGenerator, name='')
 :canonical: ophyd_async.sim._stage.SimStage
 
 Bases: {py:obj}`ophyd_async.core.StandardReadable`
@@ -158,7 +115,23 @@ Bases: {py:obj}`ophyd_async.core.StandardReadable`
 ```{autodoc2-docstring} ophyd_async.sim._stage.SimStage
 ```
 
+````{py:method} stage()
+:canonical: ophyd_async.sim._stage.SimStage.stage
+
+```{autodoc2-docstring} ophyd_async.sim._stage.SimStage.stage
+```
+
 ````
+
+````{py:method} unstage()
+:canonical: ophyd_async.sim._stage.SimStage.unstage
+
+```{autodoc2-docstring} ophyd_async.sim._stage.SimStage.unstage
+```
+
+````
+
+`````
 
 `````{py:class} PatternGenerator(sleep=asyncio.sleep)
 :canonical: ophyd_async.sim._pattern_generator.PatternGenerator
@@ -190,7 +163,7 @@ Bases: {py:obj}`ophyd_async.core.StandardReadable`
 
 ````
 
-````{py:method} open_file(path: ~pathlib.Path, width: int, height: int)
+````{py:method} open_file(path: ~pathlib.PurePath, width: int, height: int)
 :canonical: ophyd_async.sim._pattern_generator.PatternGenerator.open_file
 
 ```{autodoc2-docstring} ophyd_async.sim._pattern_generator.PatternGenerator.open_file
@@ -198,28 +171,19 @@ Bases: {py:obj}`ophyd_async.core.StandardReadable`
 
 ````
 
-````{py:method} write_images_to_file(exposure: float, period: float, number_of_frames: int)
+````{py:method} setup_acquisition_parameters(exposure: float, period: float, number_of_frames: int)
+:canonical: ophyd_async.sim._pattern_generator.PatternGenerator.setup_acquisition_parameters
+
+```{autodoc2-docstring} ophyd_async.sim._pattern_generator.PatternGenerator.setup_acquisition_parameters
+```
+
+````
+
+````{py:method} write_images_to_file()
 :canonical: ophyd_async.sim._pattern_generator.PatternGenerator.write_images_to_file
 :async:
 
 ```{autodoc2-docstring} ophyd_async.sim._pattern_generator.PatternGenerator.write_images_to_file
-```
-
-````
-
-````{py:method} wait_for_next_index(timeout: float)
-:canonical: ophyd_async.sim._pattern_generator.PatternGenerator.wait_for_next_index
-:async:
-
-```{autodoc2-docstring} ophyd_async.sim._pattern_generator.PatternGenerator.wait_for_next_index
-```
-
-````
-
-````{py:method} get_last_index() -> int
-:canonical: ophyd_async.sim._pattern_generator.PatternGenerator.get_last_index
-
-```{autodoc2-docstring} ophyd_async.sim._pattern_generator.PatternGenerator.get_last_index
 ```
 
 ````
@@ -234,7 +198,7 @@ Bases: {py:obj}`ophyd_async.core.StandardReadable`
 
 `````
 
-`````{py:class} SimPointDetector(generator: ~ophyd_async.sim._pattern_generator.PatternGenerator, num_channels: int = 3, name: str = '')
+`````{py:class} SimPointDetector(pattern_generator: ~ophyd_async.sim._pattern_generator.PatternGenerator | None, num_channels: int = 3, name: str = '')
 :canonical: ophyd_async.sim._point_detector.SimPointDetector
 
 Bases: {py:obj}`ophyd_async.core.StandardReadable`
